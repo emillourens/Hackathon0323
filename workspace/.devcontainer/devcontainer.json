@@ -1,0 +1,41 @@
+{
+  "name": ".NET 7 Azure Functions with Azurite",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+          "ms-azuretools.vscode-azurefunctions",
+          "ms-dotnettools.csharp"
+      ],
+      "settings": {
+          "azureFunctions.deploySubpath": "bin/Release/net7.0/publish",
+          "azureFunctions.scmDoBuildDuringDeployment": false,
+          "azureFunctions.preDeployTask": "build",
+          "azureFunctions.projectLanguage": "C#",
+          "azureFunctions.projectRuntime": "~4",
+          "azureFunctions.workerRuntime": "dotnet-isolated"
+      }
+    }
+  },
+  "appPort": [
+        7071,
+        7072
+  ],
+  "forwardPorts": [
+      10002
+  ],
+  "workspaceFolder": "/workspace",
+  "mounts": [
+      "source=${localWorkspaceFolder}/.azurite,target=/.azurite,type=bind,consistency=cached",
+      "source=${localWorkspaceFolder}/DocsBot,target=/workspace,type=bind,consistency=cached"
+  ],
+  "runArgs": [
+      "--network=host"
+  ],
+  "postCreateCommand": "npm install -g azurite",
+  "containerEnv": {
+      "AzureWebJobsStorage": "UseDevelopmentStorage=true;"
+  }
+}
